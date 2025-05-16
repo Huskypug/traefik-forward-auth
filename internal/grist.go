@@ -41,7 +41,7 @@ func NewGrist(port int, apiKey, orgName string) *Grist {
 	g.baseUrl = "http://127.0.0.1"
 	orgs, err := g.getOrgs()
 	if err != nil {
-		panic(err)
+		return g
 	}
 	g.mu.Lock()
 	g.knownOrg = *orgs
