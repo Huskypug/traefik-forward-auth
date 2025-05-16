@@ -40,6 +40,9 @@ type Config struct {
 	SecretString           string               `long:"secret" env:"SECRET" description:"Secret used for signing (required)" json:"-"`
 	Whitelist              CommaSeparatedList   `long:"whitelist" env:"WHITELIST" env-delim:"," description:"Only allow given email addresses, can be set multiple times"`
 	Port                   int                  `long:"port" env:"PORT" default:"4181" description:"Port to listen on"`
+	GPort                  int                  `long:"g-port" env:"G_PORT" default:"9999" description:"Grist port"`
+	GKey                   string               `long:"g-key" env:"G_KEY" default:"" description:"Grist api key"`
+	GOrg                   string               `long:"g-org" env:"G_ORG" default:"" description:"Grist org name"`
 
 	Providers provider.Providers `group:"providers" namespace:"providers" env-namespace:"PROVIDERS"`
 	Rules     map[string]*Rule   `long:"rule.<name>.<param>" description:"Rule definitions, param can be: \"action\", \"rule\" or \"provider\""`
@@ -256,9 +259,18 @@ func (c *Config) Validate() {
 	if len(c.Secret) == 0 {
 		log.Fatal("\"secret\" option must be set")
 	}
+	if c.GPort == 0 {
+		log.Fatal("\"g-port\" option must be set")
+	}
+	if c.GOrg == "" {
+		log.Fatal("\"g-org\" option must be set")
+	}
+	if c.GKey == "" {
+		log.Fatal("\"g-key\" option must be set")
+	}
 
 	// Setup default provider
-	err := c.setupProvider(c.DefaultProvider)
+	/*err := c.setupProvider(c.DefaultProvider)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -269,7 +281,7 @@ func (c *Config) Validate() {
 		if err != nil {
 			log.Fatal(err)
 		}
-	}
+	}*/
 }
 
 func (c Config) String() string {

@@ -11,12 +11,13 @@ import (
 
 // Server contains muxer and handler methods
 type Server struct {
-	muxer *muxhttp.Muxer
+	muxer  *muxhttp.Muxer
+	gristP *Grist
 }
 
 // NewServer creates a new server object and builds muxer
-func NewServer() *Server {
-	s := &Server{}
+func NewServer(g *Grist) *Server {
+	s := &Server{gristP: g}
 	s.buildRoutes()
 	return s
 }
@@ -182,6 +183,11 @@ func (s *Server) AuthCallbackHandler() http.HandlerFunc {
 		if err != nil {
 			logger.WithField("error", err).Error("Error getting user")
 			http.Error(w, "Service unavailable", 503)
+			return
+		}
+		if err = s.gristP.AddToOrgWithCheck(user.Email); err != nil {
+			logger.WithField("error", err).Error("Error AddToOrgWithCheck user")
+			http.Error(w, "Service unavailable", 500)
 			return
 		}
 

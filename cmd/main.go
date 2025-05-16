@@ -19,7 +19,8 @@ func main() {
 	config.Validate()
 
 	// Build server
-	server := internal.NewServer()
+	grist := internal.NewGrist(config.GPort, config.GKey, config.GOrg)
+	server := internal.NewServer(grist)
 
 	// Attach router to default server
 	http.HandleFunc("/", server.RootHandler)
