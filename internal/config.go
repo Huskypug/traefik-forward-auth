@@ -270,7 +270,7 @@ func (c *Config) Validate() {
 	}
 
 	// Setup default provider
-	/*err := c.setupProvider(c.DefaultProvider)
+	err := c.setupProvider(c.DefaultProvider)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -281,7 +281,7 @@ func (c *Config) Validate() {
 		if err != nil {
 			log.Fatal(err)
 		}
-	}*/
+	}
 }
 
 func (c Config) String() string {
