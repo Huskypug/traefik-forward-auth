@@ -43,6 +43,7 @@ type Config struct {
 	GPort                  int                  `long:"g-port" env:"G_PORT" default:"9999" description:"Grist port"`
 	GKey                   string               `long:"g-key" env:"G_KEY" default:"" description:"Grist api key"`
 	GOrg                   string               `long:"g-org" env:"G_ORG" default:"" description:"Grist org name"`
+	GAdminMail             string               `long:"g-admin" env:"G_ADMIN" default:"" description:"Grist admin email"`
 
 	Providers provider.Providers `group:"providers" namespace:"providers" env-namespace:"PROVIDERS"`
 	Rules     map[string]*Rule   `long:"rule.<name>.<param>" description:"Rule definitions, param can be: \"action\", \"rule\" or \"provider\""`

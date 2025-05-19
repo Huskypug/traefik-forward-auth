@@ -27,17 +27,18 @@ type orgAccess struct {
 }
 
 type Grist struct {
-	mu       sync.Mutex
-	port     int
-	baseUrl  string
-	apiKey   string
-	orgName  string
-	knownOrg orgAccess
+	mu        sync.Mutex
+	port      int
+	baseUrl   string
+	apiKey    string
+	orgName   string
+	adminMail string
+	knownOrg  orgAccess
 }
 
 // NewGrist creates a new grist api object
-func NewGrist(port int, apiKey, orgName string) *Grist {
-	g := &Grist{port: port, apiKey: apiKey, orgName: orgName}
+func NewGrist(port int, apiKey, orgName, adminMail string) *Grist {
+	g := &Grist{port: port, apiKey: apiKey, orgName: orgName, adminMail: adminMail}
 	g.baseUrl = "http://127.0.0.1"
 	orgs, err := g.getOrgs()
 	if err != nil {
@@ -50,6 +51,9 @@ func NewGrist(port int, apiKey, orgName string) *Grist {
 }
 
 func (g *Grist) AddToOrgWithCheck(email string) error {
+	if email == g.adminMail {
+		return nil
+	}
 	// check in known users
 	for _, org := range g.knownOrg.Users {
 		if org.Email == email {

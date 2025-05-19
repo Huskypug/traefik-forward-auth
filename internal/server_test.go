@@ -34,7 +34,7 @@ func init() {
 func TestServerRootHandler(t *testing.T) {
 	assert := assert.New(t)
 	config = newDefaultConfig()
-	grist := NewGrist(config.GPort, config.GKey)
+	grist := NewGrist(config.GPort, config.GKey, config.GOrg, config.GAdminMail)
 
 	// X-Forwarded headers should be read into request
 	req := httptest.NewRequest("POST", "http://should-use-x-forwarded.com/should?ignore=me", nil)

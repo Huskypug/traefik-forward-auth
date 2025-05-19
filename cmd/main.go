@@ -19,7 +19,7 @@ func main() {
 	config.Validate()
 
 	// Build server
-	grist := internal.NewGrist(config.GPort, config.GKey, config.GOrg)
+	grist := internal.NewGrist(config.GPort, config.GKey, config.GOrg, config.GAdminMail)
 	server := internal.NewServer(grist)
 
 	// Attach router to default server
