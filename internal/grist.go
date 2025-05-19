@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/sirupsen/logrus"
 	"net/http"
 	"sync"
 	"time"
@@ -28,6 +29,7 @@ type orgAccess struct {
 
 type Grist struct {
 	mu        sync.Mutex
+	l         *logrus.Logger
 	port      int
 	baseUrl   string
 	apiKey    string
@@ -38,10 +40,13 @@ type Grist struct {
 
 // NewGrist creates a new grist api object
 func NewGrist(port int, apiKey, orgName, adminMail string) *Grist {
-	g := &Grist{port: port, apiKey: apiKey, orgName: orgName, adminMail: adminMail}
-	g.baseUrl = "http://127.0.0.1"
+	g := &Grist{
+		l:       NewDefaultLogger(),
+		baseUrl: "http://127.0.0.1",
+		port:    port, apiKey: apiKey, orgName: orgName, adminMail: adminMail}
 	orgs, err := g.getOrgs()
 	if err != nil {
+		g.l.Warn("Error getting init orgs:", err)
 		return g
 	}
 	g.mu.Lock()
@@ -77,6 +82,7 @@ func (g *Grist) AddToOrgWithCheck(email string) error {
 	if err != nil {
 		return err
 	}
+	g.l.Info("Added to org:", email)
 	return nil
 }
 

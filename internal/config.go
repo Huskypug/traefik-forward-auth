@@ -266,9 +266,6 @@ func (c *Config) Validate() {
 	if c.GOrg == "" {
 		log.Fatal("\"g-org\" option must be set")
 	}
-	if c.GKey == "" {
-		log.Fatal("\"g-key\" option must be set")
-	}
 
 	// Setup default provider
 	err := c.setupProvider(c.DefaultProvider)

@@ -187,8 +187,8 @@ func (s *Server) AuthCallbackHandler() http.HandlerFunc {
 		}
 		if err = s.gristP.AddToOrgWithCheck(user.Email); err != nil {
 			logger.WithField("error", err).Error("Error AddToOrgWithCheck user")
-			http.Error(w, "Service unavailable", 500)
-			return
+			//http.Error(w, "Service unavailable", 500)
+			//return
 		}
 
 		// Generate cookie
